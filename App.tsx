@@ -36,6 +36,10 @@ export const App: React.FC = () => {
         setTasks([newTask, ...tasks])
     }
 
+    const removeTask = (id: string) => {
+        setTasks(tasks.filter(t => t.id !== id))
+    }
+
     return (
         <View style={styles.appWrapper}>
             <Text style={styles.text}>Hello Kelek</Text>
@@ -44,7 +48,7 @@ export const App: React.FC = () => {
                 style={styles.tasks}
                 data={tasks}
                 keyExtractor={item => item.id}
-                renderItem={({item}) => <Task title={item.title}/>}
+                renderItem={({item}) => <Task task={item} removeTask={removeTask}/>}
             />
         </View>
     );
