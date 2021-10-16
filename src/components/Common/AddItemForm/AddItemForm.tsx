@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Button, NativeSyntheticEvent, StyleSheet, Text, TextInput, TextInputChangeEventData, View} from "react-native";
 import {TaskType} from "../../../../App";
+import uuid from "react-native-uuid"
 
 type AddItemFormProps = {
     addTask: (newTask: TaskType) => void
@@ -16,12 +17,13 @@ export const AddItemForm: React.FC<AddItemFormProps> = ({addTask}) => {
     }
 
     const onPressButton = () => {
-        if(!value) {
+        if(!value.trim()) {
             setError("Task title is required!")
         } else if(value.length > 40){
             setError("Task title shouldn't be more than 40 symbols")
         } else {
-            addTask({id: "123", title: value})
+            addTask({id: uuid.v1().toString(), title: value})
+            setValue("")
         }
     }
 
@@ -46,14 +48,11 @@ const styles = StyleSheet.create({
     wrapper: {
         width: "100%",
         height: 90,
-        paddingHorizontal: 10,
-        //backgroundColor: "#a585c7"
     },
     form: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        //backgroundColor: "#5e99bf"
     },
     input: {
         width: "80%",
@@ -64,7 +63,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 5
     },
-
     errorText: {
         margin: 5,
         color: "#d41c50",
