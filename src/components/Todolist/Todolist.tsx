@@ -1,13 +1,13 @@
 import React, {useRef, useState} from "react";
 import {Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
-import {TaskType} from "../../../App";
+import {TodolistType} from "../../../App";
 
-type TaskProps = {
-    task: TaskType,
-    removeTask: (id: string) => void
+type TodolistProps = {
+    todolist: TodolistType,
+    removeTodolist: (id: string) => void
 }
 
-export const Task: React.FC<TaskProps> = ({task, removeTask}) => {
+export const Todolist: React.FC<TodolistProps> = ({todolist, removeTodolist}) => {
     const [mode, setMode] = useState<boolean>(false);
     const anime = useRef(new Animated.Value(-90)).current;
 
@@ -21,18 +21,18 @@ export const Task: React.FC<TaskProps> = ({task, removeTask}) => {
     }
 
     return (
-        <Animated.View style={[styles.taskWrapper, {transform: [{translateX: anime}]}]}>
+        <Animated.View style={[styles.todolistWrapper, {transform: [{translateX: anime}]}]}>
             <View style={styles.icon}>
                 <Text style={{color: "#000"}}>⚙</Text>
             </View>
-            <TouchableHighlight onPress={() => removeTask(task.id)}>
+            <TouchableHighlight onPress={() => removeTodolist(todolist.id)}>
                 <View style={styles.icon}>
                     <Text style={{color: "#000"}}>🗑</Text>
                 </View>
             </TouchableHighlight>
             <TouchableOpacity activeOpacity={0.5} onLongPress={longPressTask} style={styles.touch}>
-                <View style={styles.taskBlock}>
-                    <Text style={styles.taskText}>{task.title}</Text>
+                <View style={styles.todolistBlock}>
+                    <Text style={styles.todolistText}>{todolist.title}</Text>
                 </View>
             </TouchableOpacity>
         </Animated.View>
@@ -40,7 +40,7 @@ export const Task: React.FC<TaskProps> = ({task, removeTask}) => {
 }
 
 const styles = StyleSheet.create({
-    taskWrapper: {
+    todolistWrapper: {
         flex: 1,
         flexDirection: "row",
         alignItems: "center",
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     touch: {
         width: "100%"
     },
-    taskBlock: {
+    todolistBlock: {
         width: "100%",
         height: 50,
         marginBottom: 10,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#171616",
         borderRadius: 5
     },
-    taskText: {
+    todolistText: {
         color: "#fff"
     },
     icon: {

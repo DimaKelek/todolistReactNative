@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
-import {AddItemForm} from "./src/components/Common/AddItemForm/AddItemForm";
-import {Task} from "./src/components/Task/Task";
+import {StyleSheet, View} from 'react-native';
+import {TodolistScreen} from "./src/components/Screens/TodolistScreen";
+import uuid from "react-native-uuid";
+import {Header} from "./src/components/Common/Header/Header";
 
-export type TaskType = {
+export type TodolistType = {
     id: string,
     title: string
 }
 
 export const App: React.FC = () => {
-    const [tasks, setTasks] = useState<TaskType[]>([
+    const [todolists, setTodolists] = useState<TodolistType[]>([
         {id: "1", title: "React"},
         {id: "2", title: "React Native"},
         {id: "3", title: "Redux"},
@@ -32,23 +33,22 @@ export const App: React.FC = () => {
         {id: "20", title: "Redux-thunk"},
     ])
 
-    const addTask = (newTask: TaskType) => {
-        setTasks([newTask, ...tasks])
+    const addTodolist = (title: string) => {
+        const newTodo: TodolistType = {id: uuid.v1().toString(), title}
+        setTodolists([newTodo, ...todolists])
     }
 
-    const removeTask = (id: string) => {
-        setTasks(tasks.filter(t => t.id !== id))
+    const removeTodolist = (id: string) => {
+        setTodolists(todolists.filter(t => t.id !== id))
     }
 
     return (
         <View style={styles.appWrapper}>
-            <Text style={styles.text}>Hello Kelek</Text>
-            <AddItemForm addTask={addTask}/>
-            <FlatList
-                style={styles.tasks}
-                data={tasks}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => <Task task={item} removeTask={removeTask}/>}
+            <Header title={"Hello kelek"}/>
+            <TodolistScreen
+                addTodolist={addTodolist}
+                removeTodolist={removeTodolist}
+                todolists={todolists}
             />
         </View>
     );
@@ -61,14 +61,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 10,
         backgroundColor: "#0c0c0c"
-    },
-    text: {
-        color: "#fff",
-        fontSize: 25,
-        marginVertical: 20,
-        textTransform: "uppercase"
-    },
-    tasks: {
-        width: "100%",
     }
 })

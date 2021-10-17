@@ -1,13 +1,12 @@
 import React, {useState} from "react";
 import {Button, NativeSyntheticEvent, StyleSheet, Text, TextInput, TextInputChangeEventData, View} from "react-native";
-import {TaskType} from "../../../../App";
-import uuid from "react-native-uuid"
 
 type AddItemFormProps = {
-    addTask: (newTask: TaskType) => void
+    addItem: (title: string) => void
+    placeholder?: string
 }
 
-export const AddItemForm: React.FC<AddItemFormProps> = ({addTask}) => {
+export const AddItemForm: React.FC<AddItemFormProps> = ({addItem, placeholder}) => {
     const [value, setValue] = useState<string>("")
     const [error, setError] = useState<string | null>(null)
 
@@ -18,11 +17,11 @@ export const AddItemForm: React.FC<AddItemFormProps> = ({addTask}) => {
 
     const onPressButton = () => {
         if(!value.trim()) {
-            setError("Task title is required!")
+            setError("Todolist title is required!")
         } else if(value.length > 40){
-            setError("Task title shouldn't be more than 40 symbols")
+            setError("Todolist title shouldn't be more than 40 symbols")
         } else {
-            addTask({id: uuid.v1().toString(), title: value})
+            addItem(value)
             setValue("")
         }
     }
@@ -32,7 +31,7 @@ export const AddItemForm: React.FC<AddItemFormProps> = ({addTask}) => {
             <View style={styles.form}>
                 <TextInput
                     style={[styles.input, {borderColor: error ? "#d41c50": "#0c0c0c"}]}
-                    placeholder="Task title ..."
+                    placeholder={placeholder}
                     placeholderTextColor="#888383FF"
                     value={value}
                     onChange={onChangeTitle}
